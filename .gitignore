@@ -3,7 +3,7 @@
 # dependencies
 E:\códigos\fullstack\part11\phonebook_workflow\backend\node_modules
 *\node_modules
-backend\.env
+.env
 
 */.pnp
 .pnp.js
