@@ -10,6 +10,8 @@ jobs:
   hello_world_job:
     runs-on: ubuntu-20.04
     steps:
+      - name: Directory content
+        run: ls -l
       - name: Say hello
         run: |
           echo "Hello World!"
