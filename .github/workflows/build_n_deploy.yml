@@ -7,17 +7,13 @@ on:
   
 
 jobs:
-    simple_deployment_pipeline:
+    install_n_build:
       runs-on: ubuntu-20.04
       steps:
         - uses: actions/checkout@v3
         - uses: actions/setup-node@v3
           with:
             node-version: '16'
-        - name: Directory change
-          run: cd backend
-        - name: Directory content
-          run: ls
         - name: Install backend dependencies
           run: npm install
         
