@@ -8,7 +8,7 @@ on:
 
 jobs:
     simple_deployment_pipeline:
-      runs-on: windows@latest
+      runs-on: ubuntu-20.04
       steps:
         - uses: actions/checkout@v3
         - uses: actions/setup-node@v3
@@ -17,7 +17,7 @@ jobs:
         - name: Directory change
           run: cd backend
         - name: Directory content
-          run: dir
+          run: ls
         - name: Install backend dependencies
           run: npm install
         
