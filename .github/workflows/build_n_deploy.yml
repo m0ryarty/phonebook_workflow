@@ -15,9 +15,7 @@ jobs:
           with:
             node-version: '16'
         - name: Directory content
-          run: ls
-        - name: Install frontend dependencies
-          run: frontend/npm install
+          run: cd backend
         - name: Install backend dependencies
-          run: backend/npm install
+          run: npm install
         
