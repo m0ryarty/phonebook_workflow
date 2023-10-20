@@ -8,16 +8,16 @@ on:
 
 jobs:
     simple_deployment_pipeline:
-      runs-on: ubuntu-20.04
+      runs-on: windows
       steps:
         - uses: actions/checkout@v3
         - uses: actions/setup-node@v3
           with:
             node-version: '16'
         - name: Directory change
-          run: cd /backend
+          run: cd backend
         - name: Directory content
-          run: ls
+          run: dir
         - name: Install backend dependencies
           run: npm install
         
