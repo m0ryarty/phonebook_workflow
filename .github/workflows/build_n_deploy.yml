@@ -14,8 +14,10 @@ jobs:
         - uses: actions/setup-node@v3
           with:
             node-version: '16'
-        - name: Directory content
+        - name: Directory change
           run: cd backend
+        - name: Directory content
+          run: ls
         - name: Install backend dependencies
           run: npm install
         
