@@ -15,7 +15,7 @@ jobs:
           with:
             node-version: '16'
         - name: Directory change
-          run: cd backend
+          run: cd /backend
         - name: Directory content
           run: ls
         - name: Install backend dependencies
