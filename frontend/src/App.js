@@ -1,5 +1,3 @@
-
-
 import { useState, useEffect } from 'react'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
@@ -7,21 +5,13 @@ import Persons from './components/Persons'
 import Notification from './components/Notification'
 import backend from './backend/backend'
 
-
-
-
 const App = () => {
-
-
-
-
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [phoneMessage, setPhoneMessage] = useState(null)
   const [error, setError] = useState(false)
-
 
   useEffect(() => {
     backend.allPhones().then(phones =>
@@ -30,7 +20,6 @@ const App = () => {
   }, [])
 
   const personsArray = persons.map((person) => person.name)
-
 
   const handleChangeName = (event) => {
     const newPersonName = event.target.value
@@ -46,33 +35,19 @@ const App = () => {
     setFilter(newPersonFilter)
   }
 
-
-
   const addName = (event) => {
-    event.preventDefault();
+    event.preventDefault()
 
     const newPhone = {
       name: newName,
-      number: newNumber,
+      number: newNumber
     }
-
-
 
     const changeNumber = persons.find(p => p.name === newName)
 
-
-
-
-
     if (newName && newNumber) {
-
-
-
       if (personsArray.includes(newName)) {
         if (window.confirm(`Update ${newName}'s number? `)) {
-
-
-
           backend.updatePhone(changeNumber.id, newPhone)
             .then(() => {
               console.log('then')
@@ -86,9 +61,6 @@ const App = () => {
               }, 5000)
             })
             .catch((error) => {
-
-
-
               setPhoneMessage(
                 `${error.response.data.message}`
               )
@@ -96,33 +68,24 @@ const App = () => {
               setTimeout(() => {
                 setPhoneMessage(null)
               }, 5000)
-
-
             })
             .finally(() => {
-
               getData()
-
             })
         }
       } else {
-
         backend.createPhone(newPhone)
           .then(returnedPhones => {
-
-
-          setPersons(persons.concat(returnedPhones))
-          setPhoneMessage(
-            `${newPhone.name} was added to the list`
-          )
-          setError(false)
-          setTimeout(() => {
-            setPhoneMessage(null)
-          }, 5000)
-
+            setPersons(persons.concat(returnedPhones))
+            setPhoneMessage(
+              `${newPhone.name} was added to the list`
+            )
+            setError(false)
+            setTimeout(() => {
+              setPhoneMessage(null)
+            }, 5000)
           })
           .catch(error => {
-
             setPhoneMessage(
               `${error.response.data.message}`
             )
@@ -130,12 +93,8 @@ const App = () => {
             setTimeout(() => {
               setPhoneMessage(null)
             }, 5000)
-
-
           })
-
-      }        
-
+      }
     } else {
       alert('Please, write a name and a phone number')
     }
@@ -147,8 +106,6 @@ const App = () => {
   const getData = () => {
     backend.allPhones().then(phones => setPersons(phones))
   }
-
-
 
   const deletePersons = (event) => {
     const id = event.target.id
@@ -165,9 +122,6 @@ const App = () => {
         setPhoneMessage(null)
       }, 5000)
     })
-
-
-
   }
 
   return (

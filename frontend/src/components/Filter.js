@@ -1,14 +1,13 @@
-
 const Filter = ({ handleChangeFilter }) => {
-    return (
-        <>
-            <h2>Phonebook</h2>
+  return (
+    <>
+      <h2>Phonebook</h2>
 
-            <div>
+      <div>
                 filter shown with <input onChange={handleChangeFilter} />
-            </div>
-        </>
-    )
+      </div>
+    </>
+  )
 }
 
 export default Filter
