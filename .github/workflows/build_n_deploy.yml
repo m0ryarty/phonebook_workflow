@@ -16,6 +16,8 @@ jobs:
             node-version: '16'
         - name: Install backend dependencies
           run: npm install        
+        - name: Install frontend dependencies
+          run: cd frontend/ && npm install        
         - name: Building
           run: npm run build:ui
         
