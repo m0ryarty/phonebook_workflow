@@ -17,7 +17,29 @@ jobs:
         - name: Install backend dependencies
           run: npm install        
         - name: Install frontend dependencies
-          run: cd frontend/ && npm install        
+          run: cd frontend/ && npm install
+    run-linters:
+      name: Run linters
+      runs-on: ubuntu-latest
+
+      steps:
+        - name: Check out Git repository
+          uses: actions/checkout@v3
+
+        - name: Set up Node.js
+          uses: actions/setup-node@v1
+          with:
+            node-version: 12
+
+      # ESLint and Prettier must be in `package.json`
+        - name: Install Node.js dependencies
+          run: npm ci
+
+        - name: Run linters
+          uses: wearerequired/lint-action@v2
+          with:
+            eslint: true
+            prettier: true        
         - name: Building
           run: npm run build:ui
         
@@ -40,8 +62,8 @@ jobs:
             username: Moryarty
             color: '#ff00aa'
             avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
-            description: This is a success notification and...
-            details: Indeed, succeeded!                
+            description: The phonebook app is deployed
+            details: ${{ github.event.description }}                
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
         - name: Deploy Error
           uses: rjstone/discord-webhook-notify@v1
@@ -54,5 +76,18 @@ jobs:
             description: Not deployed!
             details: ${{ github.event.description }}                
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+    versioning:
+        needs: [install_n_build]      
+        runs-on: ubuntu-22.04
+        steps:
+          - uses: actions/checkout@v3
+            with:
+              fetch-depth: '0'      
+          - name: Bump version and push tag
+            uses: anothrNick/github-tag-action@a2c70ae13a881faf2b4953baaa9e49731997ab36
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              DEFAULT_BUMP: patch
 
         
