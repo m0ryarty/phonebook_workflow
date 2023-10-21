@@ -19,6 +19,7 @@ jobs:
         - name: Install frontend dependencies
           run: cd frontend/ && npm install
     run-linters:
+      needs: [install_n_build]
       name: Run linters
       runs-on: ubuntu-latest
 
