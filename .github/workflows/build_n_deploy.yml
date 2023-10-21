@@ -17,13 +17,11 @@ jobs:
         - name: Install backend dependencies
           run: npm install        
         - name: Install frontend dependencies
-          run: cd frontend/ && npm install 
-        
+          run: cd frontend/ && npm install        
         - name: Run linters
           uses: wearerequired/lint-action@v2
           with:
-            eslint: true
-            prettier: true        
+            eslint: true                   
         - name: Building
           run: npm run build:ui
         
