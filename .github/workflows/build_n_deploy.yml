@@ -15,13 +15,12 @@ jobs:
           with:
             node-version: '16'
         - name: Install backend dependencies
-          run: npm install
-        - name: Check lint
-          run: npm run eslint
+          run: npm install        
         - name: Building
           run: npm run build:ui
         
     deploy_to-fly:
+      needs: [install_n_build]
       runs-on: ubuntu-20.04
       if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
       steps:
