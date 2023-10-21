@@ -1,0 +1,78 @@
+name: PhoneBook deployement
+
+on:
+  push:
+    branches:
+      - secondary
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize]
+  
+
+jobs:
+    install_n_build:
+      runs-on: ubuntu-20.04
+      steps:
+        - uses: actions/checkout@v3
+        - uses: actions/setup-node@v3
+          with:
+            node-version: '16'
+        - name: Install backend dependencies
+          run: npm install        
+        - name: Install frontend dependencies
+          run: cd frontend/ && npm install        
+        - name: Run linters
+          uses: wearerequired/lint-action@v2
+          with:
+            eslint: true                   
+        - name: Building
+          run: npm run build:ui
+        
+    deploy_to-fly:
+      needs: [install_n_build]
+      runs-on: ubuntu-20.04
+      if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message), '#skip') }}
+      steps:
+        - uses: actions/checkout@v3
+        - uses: superfly/flyctl-actions/setup-flyctl@master
+        - name: Deploy app
+          run: flyctl deploy --remote-only
+          env:
+              FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+        - name: Deploy Success
+          uses: rjstone/discord-webhook-notify@v1
+          if: success()
+          with:
+            severity: info
+            username: Moryarty
+            color: '#ff00aa'
+            avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
+            description: The phonebook app is deployed
+            details: ${{ github.event.description }}                
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+        - name: Deploy Error
+          uses: rjstone/discord-webhook-notify@v1
+          if: failure()
+          with:
+            severity: error
+            username: Moryarty
+            color: '#ff00aa'
+            avatarUrl: https://github.githubassets.com/images/modules/logos_page/Octocat.png
+            description: Not deployed!
+            details: ${{ github.event.description }}                
+            webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
+
+    versioning:
+        needs: [install_n_build]      
+        runs-on: ubuntu-22.04
+        steps:
+          - uses: actions/checkout@v3
+            with:
+              fetch-depth: '0'      
+          - name: Bump version and push tag
+            uses: anothrNick/github-tag-action@a2c70ae13a881faf2b4953baaa9e49731997ab36
+            env:
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              DEFAULT_BUMP: patch
+
+        

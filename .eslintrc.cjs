@@ -5,6 +5,11 @@ module.exports = {
     es2021: true,
     node: true
   },
+  settings: {
+    react: {
+      version: 'detect'
+    }
+  },
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
@@ -44,7 +49,9 @@ module.exports = {
     'arrow-spacing': [
       'error', { before: true, after: true }
     ],
-    'no-console': 0
+    'no-console': 0,
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off'
   }
 
 }
