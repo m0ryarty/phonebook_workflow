@@ -63,7 +63,7 @@ jobs:
             webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
 
     versioning:
-        needs: [install_n_build]      
+        needs: [deploy_to-fly]      
         runs-on: ubuntu-22.04
         steps:
           - uses: actions/checkout@v3
